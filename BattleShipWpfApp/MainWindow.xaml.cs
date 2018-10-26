@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -27,7 +28,6 @@ namespace BattleShipWpfApp
 
         public MainWindow()
         {
-
             InitializeComponent();
             gridArray = new String[gridSize, gridSize];
             buttonArray = new Button[gridSize, gridSize];
@@ -56,15 +56,38 @@ namespace BattleShipWpfApp
                     Grid.SetColumn(btn, i);
                     Grid.SetRow(btn, j);
 
-
-
                 }
             }
+
+            Point randomPoint = randompos();
+            gridArray[(int)randomPoint.X, (int)randomPoint.Y] = "destroyer";
+            reveal();
+        }
+
+        public Point randompos()
+        {
+            Random random = new Random();
+            Point p = new Point();
+            p.X = random.Next(0, gridSize-1);
+            p.Y = random.Next(0, gridSize - 1);
+            return p;
+        }
+
+        public void reveal()
+        {
+           for (int i = 0; i<gridSize; i++)
+			{
+			    for (int j = 0; j < gridSize; j++)
+			    {
+			        buttonArray[i, j].Content = gridArray[i, j];
+
+			    }
+			}
         }
 
         private RoutedEventHandler gridClicked(int i, int j)
         {
-            return (btn, e) => buttonArray[i, j].Content = "ok";
+            return (btn, e) => buttonArray[i, j].Content = gridArray[i, j];
         }
-            }
+    }
 }
